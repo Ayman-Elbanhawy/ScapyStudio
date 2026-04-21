@@ -1,3 +1,10 @@
+.venv/
+.downloads/
+Exports/
+PCAP/
+ScapyStudioData/
+ScapyStudioProjects/
+__pycache__/
 *.pyc
 *.pyo
 dist/
@@ -12,8 +19,6 @@ coverage.xml
 .mypy_cache
 .vscode
 .DS_Store
-[.]venv/
-__pycache__/
 doc/scapy/_build
 doc/scapy/api
 .idea

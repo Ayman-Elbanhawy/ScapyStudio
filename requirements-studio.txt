@@ -1,0 +1,6 @@
+PySide6>=6.7
+pyqtgraph>=0.13
+plotly>=5.20
+cryptography>=2.0
+matplotlib>=3.7
+pyx>=0.16

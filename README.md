@@ -1,101 +1,111 @@
-<!-- start_ppi_description -->
+# Scapy Studio
 
-# <img src="https://github.com/secdev/scapy/raw/master/doc/scapy/graphics/scapy_logo.png" width="64" valign="middle" alt="Scapy" />&nbsp;&nbsp; Scapy
+Scapy Studio is a Windows desktop analysis workspace built around the Scapy codebase. It provides a polished GUI for offline PCAP review, live capture, session analysis, packet building, protocol inspection, and export generation.
 
-[![Scapy unit tests](https://github.com/secdev/scapy/actions/workflows/unittests.yml/badge.svg?branch=master&event=push)](https://github.com/secdev/scapy/actions/workflows/unittests.yml?query=event%3Apush) <!-- ignore_ppi -->
-[![Codecov Status](https://codecov.io/gh/secdev/scapy/branch/master/graph/badge.svg)](https://codecov.io/gh/secdev/scapy) <!-- ignore_ppi -->
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30ee6772bb264a689a2604f5cdb0437b)](https://app.codacy.com/gh/secdev/scapy/dashboard) <!-- ignore_ppi -->
-[![PyPI Version](https://img.shields.io/pypi/v/scapy.svg)](https://pypi.python.org/pypi/scapy/)
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](LICENSE)
-[![Join the chat at https://gitter.im/secdev/scapy](https://badges.gitter.im/secdev/scapy.svg)](https://gitter.im/secdev/scapy) <!-- ignore_ppi -->
+- GitHub: [github.com/Ayman-Elbanhawy/ScapyStudio](https://github.com/Ayman-Elbanhawy/ScapyStudio)
+- Website: [SoftwareMile.com](https://softwaremile.com)
+- Support: [Github@Softwaremile.com](mailto:Github@Softwaremile.com)
 
-Scapy is a powerful Python-based interactive packet manipulation program and
-library.
+## GUI Preview
 
-It is able to forge or decode packets of a wide number of protocols, send them
-on the wire, capture them, store or read them using pcap files, match requests
-and replies, and much more. It is designed to allow fast packet prototyping by
-using default values that work.
+### Dashboard
 
-It can easily handle most classical tasks like scanning, tracerouting, probing,
-unit tests, attacks or network discovery (it can replace `hping`, 85% of `nmap`,
-`arpspoof`, `arp-sk`, `arping`, `tcpdump`, `wireshark`, `p0f`, etc.). It also
-performs very well at a lot of other specific tasks that most other tools can't
-handle, like sending invalid frames, injecting your own 802.11 frames, combining
-techniques (VLAN hopping+ARP cache poisoning, VoIP decoding on WEP protected
-channel, ...), etc.
+![Scapy Studio dashboard](docs/help/assets/dashboard.png)
 
-Scapy supports Python 3.7+. It's intended to
-be cross platform, and runs on many different platforms (Linux, OSX,
-\*BSD, and Windows).
+### PCAP Explorer
 
-## Getting started
+![Scapy Studio PCAP explorer](docs/help/assets/explorer.png)
 
-Scapy is usable either as a **shell** or as a **library**.
-For further details, please head over to [Getting started with Scapy](https://scapy.readthedocs.io/en/latest/introduction.html), which is part of the documentation.
+## What It Does
 
-### Shell demo
+- Load and inspect `.pcap` and `.pcapng` files
+- Import folders full of captures into a reusable project workspace
+- Review packet metadata, decoded packet details, and raw hex
+- Group traffic into source/destination/protocol flows
+- Start and stop live capture through Scapy and Npcap on Windows
+- Build local TCP and UDP packets for testing and inspection
+- Export HTML reports, JSON, CSV findings, and project ZIP archives
+- Keep local notes and project metadata in SQLite
 
-![Scapy install demo](https://secdev.github.io/files/doc/animation-scapy-install.svg)
+## Desktop Workflow
 
-Scapy can easily be used as an interactive shell to interact with the network.
-The following example shows how to send an ICMP Echo Request message to
-`github.com`, then display the reply source IP address:
+1. Run `StartMe.bat` from the repo root.
+2. Create or open a `.scapyproj` project if you want captures, notes, and exports grouped together.
+3. Open a PCAP or import a folder of captures.
+4. Review the dashboard cards, findings, explorer grid, flow table, and charts.
+5. Use the builder and protocol browser when you need packet crafting or quick layer inspection.
+6. Export reports, findings, and sessions from the Reports or Flows workspaces.
 
-```python
-sudo ./run_scapy
-Welcome to Scapy
->>> p = IP(dst="github.com")/ICMP()
->>> r = sr1(p)
-Begin emission:
-.Finished to send 1 packets.
-*
-Received 2 packets, got 1 answers, remaining 0 packets
->>> r[IP].src
-'192.30.253.113'
+## Startup
+
+### Recommended
+
+Run:
+
+```bat
+StartMe.bat
 ```
 
-### Resources
+The launcher:
 
-The [documentation](https://scapy.readthedocs.io/en/latest/) contains more
-advanced use cases, and examples.
+- creates `.venv` if needed
+- installs the editable Scapy repo plus desktop dependencies
+- compiles the `scapy_studio` package
+- checks for Npcap on Windows
+- downloads the latest Npcap installer if it is missing
+- launches the GUI
 
-Other useful resources:
+### Dependencies
 
--   [Scapy in 20 minutes](https://github.com/secdev/scapy/blob/master/doc/notebooks/Scapy%20in%2015%20minutes.ipynb)
--   [Interactive tutorial](https://scapy.readthedocs.io/en/latest/usage.html#interactive-tutorial) (part of the documentation)
--   [The quick demo: an interactive session](https://scapy.readthedocs.io/en/latest/introduction.html#quick-demo) (some examples may be outdated)
--   [HTTP/2 notebook](https://github.com/secdev/scapy/blob/master/doc/notebooks/HTTP_2_Tuto.ipynb)
--   [TLS notebooks](https://github.com/secdev/scapy/blob/master/doc/notebooks/tls)
+- **Python 3.11+** is required
+- **Npcap** is optional for offline analysis, but required for live capture on Windows
+- `requirements-studio.txt` installs the desktop UI and reporting packages used by Scapy Studio
 
-## [Installation](https://scapy.readthedocs.io/en/latest/installation.html)
+`StartMe.bat` uses generic variables rather than hard-coded machine paths:
 
-Scapy works without any external Python modules on Linux and BSD like operating
-systems. On Windows, you need to install some mandatory dependencies as
-described in [the
-documentation](http://scapy.readthedocs.io/en/latest/installation.html#windows).
+- `APP_NAME`
+- `APP_ROOT`
+- `APP_SOURCE`
+- `APP_VENV`
+- `READY_MARKER`
+- `DOWNLOAD_ROOT`
+- `NPCAP_INSTALLER`
+- `NPCAP_URL`
 
-On most systems, using Scapy is as simple as running the following commands:
+If Npcap is not installed, the launcher downloads the installer into `.downloads` and opens it. You can continue using offline PCAP analysis even before Npcap is installed.
 
-```bash
-git clone https://github.com/secdev/scapy
-cd scapy
-./run_scapy
+## Manual Launch
+
+```powershell
+py -3.11 -m venv .venv
+.venv\Scripts\python -m pip install --upgrade pip setuptools wheel
+.venv\Scripts\python -m pip install --no-build-isolation -e .
+.venv\Scripts\python -m pip install -r requirements-studio.txt
+.venv\Scripts\python -m scapy_studio
 ```
 
-To benefit from all Scapy features, such as plotting, you might want to install
-Python modules, such as `matplotlib` or `cryptography`. See the
-[documentation](http://scapy.readthedocs.io/en/latest/installation.html) and
-follow the instructions to install them.
+## Repository Layout
 
-<!-- stop_ppi_description -->
+- `scapy_studio/main.py`: Desktop window, theme, and workflow orchestration
+- `scapy_studio/analysis.py`: Packet normalization, metrics, and packet export helpers
+- `scapy_studio/workers.py`: Background PCAP and live capture workers
+- `scapy_studio/reports.py`: HTML/CSV/JSON export helpers
+- `docs/help/index.html`: Professional HTML help with menu sections and screenshots
+- `StartMe.bat`: Windows dependency bootstrap and launcher
+
+## Help
+
+The repo includes a local HTML help document with setup guidance, screenshots, workflow documentation, support details, and export notes.
+
+- open `docs/help/index.html` directly, or
+- use the **Open Help** button inside the GUI
+
+## Notes On Live Capture
+
+- Live capture depends on Scapy being able to access a working Windows capture stack
+- On Windows, that usually means installing Npcap
+- If capture fails, run the app as Administrator and confirm the correct adapter was selected
 
 ## License
 
-Scapy's code, tests and tools are licensed under GPL v2.
-The documentation (everything unless marked otherwise in `doc/`, and except the logo) is licensed under CC BY-NC-SA 2.5.
-
-## Contributing
-
-Want to contribute? Great! Please take a few minutes to
-[read this](CONTRIBUTING.md)!
+The governing legal license text remains in the root [`LICENSE`](LICENSE) file. The repository also includes a GitHub-facing [`LICENSE.md`](LICENSE.md) notice that points to the canonical license text without changing it.
